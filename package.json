@@ -15,6 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
+    "version": "changeset version",
     "type-check": "turbo run type-check",
     "release": "turbo run build --filter=@xaui/* && changeset publish"
   },
