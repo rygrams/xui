@@ -1,5 +1,13 @@
 # @xaui/colors
 
+## 0.1.3
+
+### Patch Changes
+
+- a43f64b: Add keywords to improve package discoverability
+
+  Added comprehensive keywords including colors, color-palette, tailwind, tailwindcss, typescript, design-system, ui, react-native, xaui, theming, color-scheme, and design-tokens to help users find the package more easily on npm.
+
 ## 0.1.2
 
 ### Patch Changes
