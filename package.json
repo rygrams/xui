@@ -15,6 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
+    "type-check": "turbo run type-check",
     "release": "turbo run build --filter=@xui/* && changeset publish"
   },
   "devDependencies": {
@@ -30,6 +31,6 @@
   },
   "packageManager": "pnpm@10.28.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   }
 }
