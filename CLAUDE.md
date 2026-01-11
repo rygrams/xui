@@ -52,6 +52,7 @@ The release process builds only scoped `@xaui/*` packages before publishing.
 ## Code Style
 
 **Prettier** is configured with these key settings:
+
 - No semicolons
 - Single quotes
 - 90 character line width
@@ -82,3 +83,9 @@ Run `pnpm format` to auto-format code.
 
 - Node.js >= 20
 - pnpm 10.28.0+
+
+## Pull Request Guidelines
+
+- Use `pnpm changeset` to create a new changeset
+- Before generate changeset message, run `pnpm changeset version` to update versions based on changesets
+- For pull request add What, Why, How with details for better review
