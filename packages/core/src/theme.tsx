@@ -231,19 +231,40 @@ const defaultTheme = theme
 export const XUIThemeContext = createContext<XUITheme | null>(null)
 export const XUIThemeDispatchContext = createContext<Dispatch<ThemeAction> | null>(null)
 
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P]
+}
+
 export interface XUIProviderProps {
   children: ReactNode
-  theme?: Partial<XUITheme>
+  theme?: DeepPartial<XUITheme>
 }
 
 export function XUIProvider({ children, theme: customTheme }: XUIProviderProps) {
-  const initialTheme = React.useMemo(
-    () => ({
+  const initialTheme = React.useMemo(() => {
+    if (!customTheme) return defaultTheme
+
+    return {
       ...defaultTheme,
       ...customTheme,
-    }),
-    [customTheme]
-  )
+      colors: {
+        ...defaultTheme.colors,
+        ...customTheme.colors,
+        text: {
+          ...defaultTheme.colors.text,
+          ...customTheme.colors?.text,
+        },
+        background: {
+          ...defaultTheme.colors.background,
+          ...customTheme.colors?.background,
+        },
+        border: {
+          ...defaultTheme.colors.border,
+          ...customTheme.colors?.border,
+        },
+      },
+    } as XUITheme
+  }, [customTheme])
 
   const [theme, dispatch] = useReducer(themeReducer, initialTheme)
 

@@ -2,8 +2,8 @@ import { useContext, useCallback } from 'react'
 import { XUIThemeContext, XUIThemeDispatchContext } from './theme'
 
 interface ColorAccessor {
+  color: string
   setColor: (color: string) => void
-  valueOf(): string
   toString(): string
 }
 
@@ -28,7 +28,7 @@ interface BorderColorAccessor {
   focus: ColorAccessor
 }
 
-interface UseThemeReturn {
+interface UseXUIThemeReturn {
   primary: ColorAccessor
   secondary: ColorAccessor
   success: ColorAccessor
@@ -40,7 +40,7 @@ interface UseThemeReturn {
   border: BorderColorAccessor
 }
 
-export function useXUITheme(): UseThemeReturn {
+export function useXUITheme(): UseXUIThemeReturn {
   const theme = useContext(XUIThemeContext)
   const dispatch = useContext(XUIThemeDispatchContext)
 
@@ -50,7 +50,9 @@ export function useXUITheme(): UseThemeReturn {
 
   const createAccessor = useCallback(
     (getter: () => string, setter: (value: string) => void): ColorAccessor => ({
-      valueOf: () => getter(),
+      get color() {
+        return getter()
+      },
       toString: () => getter(),
       setColor: setter,
     }),
