@@ -7,6 +7,7 @@ export type {
   ThemeBorderRadius,
   ThemeFontSizes,
   ThemeFontWeights,
+  ThemeFontFamilies,
   ThemeShadows,
   ColorName,
   ColorShade,
