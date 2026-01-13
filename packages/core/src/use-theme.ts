@@ -6,6 +6,7 @@ import {
   ThemeBorderRadius,
   ThemeFontSizes,
   ThemeFontWeights,
+  ThemeFontFamilies,
   ThemeShadows,
 } from './theme'
 
@@ -50,6 +51,7 @@ interface UseXUIThemeReturn {
   borderRadius: ThemeBorderRadius
   fontSizes: ThemeFontSizes
   fontWeights: ThemeFontWeights
+  fontFamilies: ThemeFontFamilies
   shadows: ThemeShadows
 }
 
@@ -155,6 +157,7 @@ export function useXUITheme(): UseXUIThemeReturn {
     borderRadius: theme.borderRadius,
     fontSizes: theme.fontSizes,
     fontWeights: theme.fontWeights,
+    fontFamilies: theme.fontFamilies,
     shadows: theme.shadows,
   }), [theme, dispatch, createAccessor])
 }

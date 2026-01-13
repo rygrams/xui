@@ -44,6 +44,12 @@ export interface ThemeFontWeights {
   extrabold: string
 }
 
+export interface ThemeFontFamilies {
+  body: string
+  heading: string
+  monospace: string
+}
+
 export interface ThemeShadows {
   sm: {
     shadowColor: string
@@ -81,6 +87,7 @@ export interface XUITheme {
   borderRadius: ThemeBorderRadius
   fontSizes: ThemeFontSizes
   fontWeights: ThemeFontWeights
+  fontFamilies: ThemeFontFamilies
   shadows: ThemeShadows
 }
 
@@ -121,6 +128,11 @@ const baseTheme = {
     semibold: '600',
     bold: '700',
     extrabold: '800',
+  },
+  fontFamilies: {
+    body: 'System',
+    heading: 'System',
+    monospace: 'monospace',
   },
   shadows: {
     sm: {
@@ -200,6 +212,10 @@ export function XUIProvider({ children, theme: customTheme }: XUIProviderProps) 
           ...defaultTheme.colors.border,
           ...customTheme.colors?.border,
         },
+      },
+      fontFamilies: {
+        ...defaultTheme.fontFamilies,
+        ...customTheme.fontFamilies,
       },
     } as XUITheme
   }, [customTheme])

@@ -320,6 +320,40 @@ describe('useXUITheme', () => {
       expect(result.current.primary.color).toBe('#CUSTOM1')
       expect(result.current.secondary.color).toBe('#CUSTOM2')
     })
+
+    it('should use custom font families when provided', () => {
+      const customTheme = {
+        fontFamilies: {
+          body: 'Roboto',
+          heading: 'Montserrat',
+          monospace: 'Fira Code',
+        },
+      }
+
+      const { result } = renderHook(() => useXUITheme(), {
+        wrapper: ({ children }) => <XUIProvider theme={customTheme}>{children}</XUIProvider>,
+      })
+
+      expect(result.current.fontFamilies.body).toBe('Roboto')
+      expect(result.current.fontFamilies.heading).toBe('Montserrat')
+      expect(result.current.fontFamilies.monospace).toBe('Fira Code')
+    })
+
+    it('should partially override font families', () => {
+      const customTheme = {
+        fontFamilies: {
+          heading: 'Playfair Display',
+        },
+      }
+
+      const { result } = renderHook(() => useXUITheme(), {
+        wrapper: ({ children }) => <XUIProvider theme={customTheme}>{children}</XUIProvider>,
+      })
+
+      expect(result.current.fontFamilies.heading).toBe('Playfair Display')
+      expect(result.current.fontFamilies.body).toBe('System')
+      expect(result.current.fontFamilies.monospace).toBe('monospace')
+    })
   })
 
   describe('theme properties access', () => {
@@ -365,6 +399,17 @@ describe('useXUITheme', () => {
       expect(result.current.fontWeights.light).toBe('300')
       expect(result.current.fontWeights.normal).toBe('400')
       expect(result.current.fontWeights.bold).toBe('700')
+    })
+
+    it('should expose fontFamilies property', () => {
+      const { result } = renderHook(() => useXUITheme(), {
+        wrapper: ({ children }) => <XUIProvider>{children}</XUIProvider>,
+      })
+
+      expect(result.current.fontFamilies).toBeDefined()
+      expect(result.current.fontFamilies.body).toBe('System')
+      expect(result.current.fontFamilies.heading).toBe('System')
+      expect(result.current.fontFamilies.monospace).toBe('monospace')
     })
 
     it('should expose shadows property', () => {
