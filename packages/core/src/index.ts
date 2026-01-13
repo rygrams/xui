@@ -1,4 +1,3 @@
-// Theme exports
 export { XUIProvider, colors, getColor, theme, darkTheme } from './theme'
 
 export type {
@@ -14,9 +13,7 @@ export type {
   XUIProviderProps,
 } from './theme'
 
-// Theme colors exports
 export { themeColors, darkThemeColors } from './theme-colors'
 export type { ThemeColors } from './theme-colors'
 
-// Theme hook
 export { useXUITheme } from './use-theme'
