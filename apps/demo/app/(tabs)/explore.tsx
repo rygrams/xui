@@ -7,12 +7,7 @@ export default function ExploreScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>roundedCap Property Demonstration</Text>
 
-      <CircularProgressIndicator
-        strokeCap={'square'}
-        themeColor="warning"
-        strokeWidth={3}
-        size={20}
-      />
+      <CircularProgressIndicator strokeCap={'square'} themeColor="warning" size={40} />
       <CupertinoActivityIndicator size={20} color={colors.white} />
       <Text style={styles.note}>Flat line caps (butt)</Text>
     </View>

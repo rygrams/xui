@@ -53,7 +53,7 @@ function MyComponent() {
 | `backgroundColor` | `string` | - | Custom background track color |
 | `strokeWidth` | `number` | `4` | Width of the progress stroke |
 | `strokeCap` | `'round' \| 'butt' \| 'square'` | `'butt'` (determinate) / `'square'` (indeterminate) | Style of the stroke line caps |
-| `isAnimate` | `boolean` | `true` | Enable/disable animations |
+| `disableAnimation` | `boolean` | `false` | Disable animations |
 
 ### Examples
 
@@ -126,7 +126,7 @@ function MyComponent() {
 ```typescript
 <CircularProgressIndicator
   value={0.5}
-  isAnimate={false}
+  disableAnimation={true}
 />
 ```
 
@@ -156,7 +156,7 @@ function MyComponent() {
 | `size` | `number` | `20` | Diameter of the indicator in pixels |
 | `themeColor` | `'primary' \| 'secondary' \| 'tertiary' \| 'danger' \| 'warning' \| 'success' \| 'default'` | `'primary'` | Theme color to use |
 | `color` | `string` | - | Custom color (overrides themeColor) |
-| `isAnimate` | `boolean` | `true` | Enable/disable spinning animation |
+| `disableAnimation` | `boolean` | `false` | Disable spinning animation |
 
 ### Examples
 
@@ -198,7 +198,7 @@ function MyComponent() {
 
 ```typescript
 <CupertinoActivityIndicator
-  isAnimate={false}
+  disableAnimation={true}
 />
 ```
 

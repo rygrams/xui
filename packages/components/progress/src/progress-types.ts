@@ -14,7 +14,7 @@ export type ProgressBaseProps = {
   backgroundColor?: string
   strokeCap?: StrokeCap
   value?: number
-  isAnimate?: boolean
+  disableAnimation?: boolean
 }
 
 export type CircularProgressIndicatorProps = ProgressBaseProps & {
@@ -32,5 +32,5 @@ export type CupertinoActivityIndicatorProps = {
     | 'success'
     | 'default'
   color?: string
-  isAnimate?: boolean
+  disableAnimation?: boolean
 }

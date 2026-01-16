@@ -15,7 +15,7 @@ type IndeterminateProgressProps = {
   strokeWidth: number
   color: string
   backgroundColor: string
-  isAnimate: boolean
+  disableAnimation: boolean
 }
 
 type DeterminateProgressProps = {
@@ -25,7 +25,7 @@ type DeterminateProgressProps = {
   backgroundColor: string
   value: number
   strokeCap: 'round' | 'butt' | 'square'
-  isAnimate: boolean
+  disableAnimation: boolean
 }
 
 const IndeterminateProgress: React.FC<IndeterminateProgressProps> = ({
@@ -33,29 +33,20 @@ const IndeterminateProgress: React.FC<IndeterminateProgressProps> = ({
   strokeWidth,
   color,
   backgroundColor,
-  isAnimate,
+  disableAnimation,
 }) => {
   const { current: timer } = useRef<Animated.Value>(new Animated.Value(0))
-  const { current: fade } = useRef<Animated.Value>(new Animated.Value(isAnimate ? 1 : 0))
   const rotation = useRef<Animated.CompositeAnimation | undefined>(undefined)
 
   const startRotation = React.useCallback(() => {
-    Animated.timing(fade, {
-      duration: 200,
-      toValue: 1,
-      useNativeDriver: true,
-    }).start()
-
     if (rotation.current) {
       timer.setValue(0)
       Animated.loop(rotation.current).start()
     }
-  }, [fade, timer])
+  }, [timer])
 
   const stopRotation = () => {
-    if (rotation.current) {
-      rotation.current.stop()
-    }
+    if (rotation.current) rotation.current.stop()
   }
 
   useEffect(() => {
@@ -68,16 +59,9 @@ const IndeterminateProgress: React.FC<IndeterminateProgressProps> = ({
       })
     }
 
-    if (isAnimate) {
-      startRotation()
-    } else {
-      Animated.timing(fade, {
-        duration: 200,
-        toValue: 0,
-        useNativeDriver: true,
-      }).start(stopRotation)
-    }
-  }, [isAnimate, fade, startRotation, timer])
+    if (!disableAnimation) startRotation()
+    else stopRotation()
+  }, [disableAnimation, startRotation, timer])
 
   const frames = (60 * DURATION) / 1000
   const easing = Easing.bezier(0.4, 0.0, 0.7, 1.0)
@@ -100,16 +84,12 @@ const IndeterminateProgress: React.FC<IndeterminateProgressProps> = ({
         }}
       />
 
-      <Animated.View
-        style={[
-          {
-            width: size,
-            height: size,
-            opacity: fade,
-            position: 'absolute',
-          },
-        ]}
-        collapsable={false}
+      <View
+        style={{
+          width: size,
+          height: size,
+          position: 'absolute',
+        }}
       >
         {[0, 1].map(index => {
           const inputRange = Array.from(
@@ -177,7 +157,7 @@ const IndeterminateProgress: React.FC<IndeterminateProgressProps> = ({
             </Animated.View>
           )
         })}
-      </Animated.View>
+      </View>
     </View>
   )
 }
@@ -189,14 +169,14 @@ const DeterminateProgress: React.FC<DeterminateProgressProps> = ({
   backgroundColor,
   value,
   strokeCap,
-  isAnimate,
+  disableAnimation,
 }) => {
   const { current: progressAnim } = useRef<Animated.Value>(new Animated.Value(0))
 
   useEffect(() => {
     const clampedValue = Math.max(MIN_VALUE, Math.min(MAX_VALUE, value))
 
-    if (!isAnimate) {
+    if (disableAnimation) {
       progressAnim.setValue(clampedValue)
     } else {
       Animated.timing(progressAnim, {
@@ -206,7 +186,7 @@ const DeterminateProgress: React.FC<DeterminateProgressProps> = ({
         useNativeDriver: Platform.OS !== 'web',
       }).start()
     }
-  }, [value, isAnimate, progressAnim])
+  }, [value, disableAnimation, progressAnim])
 
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
@@ -219,11 +199,7 @@ const DeterminateProgress: React.FC<DeterminateProgressProps> = ({
 
   return (
     <View style={[styles.container, { width: size, height: size }]}>
-      <Svg
-        width={size}
-        height={size}
-        style={{ transform: [{ rotate: '-90deg' }] }}
-      >
+      <Svg width={size} height={size} style={{ transform: [{ rotate: '-90deg' }] }}>
         <Circle
           cx={center}
           cy={center}
@@ -257,7 +233,7 @@ export const CircularProgressIndicator: React.FC<CircularProgressIndicatorProps>
   backgroundColor,
   strokeCap,
   strokeWidth: customStrokeWidth,
-  isAnimate = true,
+  disableAnimation = false,
 }) => {
   const theme = useXUITheme()
   const isIndeterminate = value === undefined || value === null
@@ -285,7 +261,7 @@ export const CircularProgressIndicator: React.FC<CircularProgressIndicatorProps>
           strokeWidth={strokeWidth}
           color={mainColor}
           backgroundColor={trackColor}
-          isAnimate={isAnimate}
+          disableAnimation={disableAnimation}
         />
       </View>
     )
@@ -305,7 +281,7 @@ export const CircularProgressIndicator: React.FC<CircularProgressIndicatorProps>
         backgroundColor={trackColor}
         value={value ?? 0}
         strokeCap={effectiveStrokeCap}
-        isAnimate={isAnimate}
+        disableAnimation={disableAnimation}
       />
     </View>
   )

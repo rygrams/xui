@@ -123,9 +123,9 @@ describe('CupertinoActivityIndicator', () => {
       expect(true).toBe(true)
     })
 
-    it('should disable animation when isAnimate is false', () => {
+    it('should disable animation when disableAnimation is true', () => {
       const { container } = renderWithProvider(
-        <CupertinoActivityIndicator isAnimate={false} />
+        <CupertinoActivityIndicator disableAnimation={true} />
       )
       expect(container.firstChild).toBeTruthy()
     })

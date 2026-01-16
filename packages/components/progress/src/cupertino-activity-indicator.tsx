@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { Animated, Easing, Platform, StyleSheet, View } from 'react-native'
 import { useXUITheme } from '@xaui/core'
 import type { CupertinoActivityIndicatorProps } from './progress-types'
@@ -6,11 +6,17 @@ import type { CupertinoActivityIndicatorProps } from './progress-types'
 const TICK_COUNT = 8
 const DURATION = 1000
 
+const getOpacityForDistance = (distance: number): number => {
+  if (distance === 0) return 1.0
+  if (distance === 1) return 0.8
+  return 0.2 + ((TICK_COUNT - distance) / TICK_COUNT) * 0.2
+}
+
 export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProps> = ({
   size = 20,
   themeColor = 'primary',
   color,
-  isAnimate = true,
+  disableAnimation = false,
 }) => {
   const theme = useXUITheme()
   const { current: rotationAnim } = useRef<Animated.Value>(new Animated.Value(0))
@@ -26,7 +32,7 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
       })
     }
 
-    if (isAnimate) {
+    if (!disableAnimation) {
       rotationAnim.setValue(0)
       Animated.loop(rotation.current).start()
     } else {
@@ -40,7 +46,7 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
         rotation.current.stop()
       }
     }
-  }, [isAnimate, rotationAnim])
+  }, [disableAnimation, rotationAnim])
 
   const colorScheme = theme.colors[themeColor]
   const tickColor = color || colorScheme.main
@@ -48,8 +54,8 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
   const tickWidth = size * 0.07
   const tickHeight = size * 0.28
 
-  const renderTicks = () => {
-    const ticks = []
+  const ticks = useMemo(() => {
+    const tickElements = []
 
     for (let i = 0; i < TICK_COUNT; i++) {
       const angle = (i * 360) / TICK_COUNT
@@ -65,17 +71,7 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
           Math.abs(j - i + TICK_COUNT),
           Math.abs(j - i - TICK_COUNT)
         )
-
-        let opacity
-        if (distance === 0) {
-          opacity = 1.0
-        } else if (distance === 1) {
-          opacity = 0.8
-        } else {
-          opacity = 0.2 + ((TICK_COUNT - distance) / TICK_COUNT) * 0.2
-        }
-
-        outputRange.push(opacity)
+        outputRange.push(getOpacityForDistance(distance))
       }
 
       const tickOpacity = rotationAnim.interpolate({
@@ -83,7 +79,7 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
         outputRange,
       })
 
-      ticks.push(
+      tickElements.push(
         <View
           key={i}
           style={[
@@ -111,8 +107,8 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
       )
     }
 
-    return ticks
-  }
+    return tickElements
+  }, [size, tickWidth, tickHeight, tickColor, rotationAnim])
 
   return (
     <View
@@ -121,7 +117,7 @@ export const CupertinoActivityIndicator: React.FC<CupertinoActivityIndicatorProp
       accessibilityRole="progressbar"
       accessibilityLabel="Loading"
     >
-      {renderTicks()}
+      {ticks}
     </View>
   )
 }

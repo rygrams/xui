@@ -190,16 +190,16 @@ describe('CircularProgressIndicator', () => {
       expect(true).toBe(true)
     })
 
-    it('should disable animation when isAnimate is false', () => {
+    it('should disable animation when disableAnimation is true', () => {
       const { container } = renderWithProvider(
-        <CircularProgressIndicator value={0.5} isAnimate={false} />
+        <CircularProgressIndicator value={0.5} disableAnimation={true} />
       )
       expect(container.firstChild).toBeTruthy()
     })
 
-    it('should not animate indeterminate when isAnimate is false', () => {
+    it('should not animate indeterminate when disableAnimation is true', () => {
       const { container } = renderWithProvider(
-        <CircularProgressIndicator isAnimate={false} />
+        <CircularProgressIndicator disableAnimation={true} />
       )
       expect(container.firstChild).toBeTruthy()
     })
