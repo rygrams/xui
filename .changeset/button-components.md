@@ -1,5 +1,5 @@
 ---
-'@xaui/button': patch
+'@xaui/buttons': patch
 '@xaui/progress': patch
 '@xaui/colors': patch
 '@xaui/core': patch
