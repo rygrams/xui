@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
-import type { TextStyle, ViewStyle, GestureResponderEvent } from 'react-native'
+import { ReactElement } from 'react'
+import type { ViewStyle, GestureResponderEvent } from 'react-native'
 
-export type ButtonProps = {
-  children: ReactNode
+export type IconButtonProps = {
+  icon: ReactElement
   themeColor?:
     | 'primary'
     | 'secondary'
@@ -11,22 +11,17 @@ export type ButtonProps = {
     | 'warning'
     | 'success'
     | 'default'
-  variant?: 'solid' | 'outlined' | 'flat' | 'light' | 'elevated' | 'faded'
+  variant?: 'solid' | 'outlined' | 'flat' | 'light' | 'faded'
   size?: 'xs' | 'sm' | 'md' | 'lg'
   radius?: 'none' | 'sm' | 'md' | 'lg' | 'full'
-  startContent?: ReactNode
-  endContent?: ReactNode
-  spinnerType?: 'ticks' | 'bullets' | 'spinner'
-  spinnerPlacement?: 'start' | 'end'
   fullWidth?: boolean
   isDisabled?: boolean
   isLoading?: boolean
   enableRipple?: boolean
-  textStyle?: TextStyle
   style?: ViewStyle
-} & ButtonEvents
+} & IconButtonEvents
 
-export type ButtonEvents = {
+export type IconButtonEvents = {
   onPress?: (event: GestureResponderEvent) => void
   onLongPress?: (event: GestureResponderEvent) => void
   onPressIn?: (event: GestureResponderEvent) => void

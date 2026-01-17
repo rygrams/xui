@@ -1,7 +1,44 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { CircularActivityIndicator } from '@xaui/progress'
 import { colors } from '@xaui/colors'
-import { Button } from '@xaui/buttons'
+import { Button, IconButton } from '@xaui/buttons'
+import Svg, { Path } from 'react-native-svg'
+
+const HeartIcon = ({ width = 24, height = 24, color = '#000' }) => (
+  <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+)
+
+const SearchIcon = ({ width = 24, height = 24, color = '#000' }) => (
+  <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.35-4.35"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+)
+
+const PlusIcon = ({ width = 24, height = 24, color = '#000' }) => (
+  <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+    <Path
+      d="M12 5v14M5 12h14"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+)
 
 export default function ExploreScreen() {
   return (
@@ -82,6 +119,7 @@ export default function ExploreScreen() {
         <Button
           themeColor="secondary"
           variant="outlined"
+          radius="full"
           isLoading
           spinnerType="bullets"
           onPress={() => {}}
@@ -98,6 +136,109 @@ export default function ExploreScreen() {
         <Button themeColor="primary" fullWidth onPress={() => {}}>
           Full Width
         </Button>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.label}>Ripple Effect</Text>
+        <Button themeColor="primary" variant="solid" enableRipple onPress={() => {}}>
+          Solid with Ripple
+        </Button>
+        <Button themeColor="secondary" variant="outlined" enableRipple onPress={() => {}}>
+          Outlined with Ripple
+        </Button>
+        <Button themeColor="success" variant="flat" enableRipple onPress={() => {}}>
+          Flat with Ripple
+        </Button>
+      </View>
+
+      <Text style={[styles.title, { marginTop: 32 }]}>Icon Buttons</Text>
+
+      <View style={styles.section}>
+        <Text style={styles.label}>Icon Button Variants</Text>
+        <View style={styles.iconRow}>
+          <IconButton
+            icon={<HeartIcon color={colors.red[500]} />}
+            themeColor="danger"
+            variant="light"
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<SearchIcon color={colors.blue[500]} />}
+            themeColor="primary"
+            variant="light"
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<PlusIcon color={colors.green[500]} />}
+            themeColor="success"
+            variant="light"
+            onPress={() => {}}
+          />
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.label}>Icon Button Sizes</Text>
+        <View style={styles.iconRow}>
+          <IconButton
+            icon={<HeartIcon />}
+            themeColor="danger"
+            variant="solid"
+            size="xs"
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<HeartIcon />}
+            themeColor="danger"
+            variant="solid"
+            size="sm"
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<HeartIcon />}
+            themeColor="danger"
+            variant="solid"
+            size="md"
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<HeartIcon />}
+            themeColor="danger"
+            variant="solid"
+            size="lg"
+            onPress={() => {}}
+          />
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.label}>Icon Button with Ripple</Text>
+        <View style={styles.iconRow}>
+          <IconButton
+            icon={<HeartIcon />}
+            themeColor="danger"
+            variant="solid"
+            radius="full"
+            enableRipple
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<SearchIcon />}
+            themeColor="primary"
+            variant="outlined"
+            radius="full"
+            enableRipple
+            onPress={() => {}}
+          />
+          <IconButton
+            icon={<PlusIcon />}
+            themeColor="success"
+            variant="flat"
+            radius="full"
+            enableRipple
+            onPress={() => {}}
+          />
+        </View>
       </View>
 
       <Text style={[styles.title, { marginTop: 32 }]}>Progress Indicators</Text>
@@ -141,5 +282,10 @@ const styles = StyleSheet.create({
   note: {
     fontSize: 12,
     color: colors.slate[400],
+  },
+  iconRow: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
   },
 })

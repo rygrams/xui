@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import {
   Pressable,
-  Text,
   View,
   StyleSheet,
   type GestureResponderEvent,
@@ -10,7 +9,7 @@ import {
 import { useXUITheme } from '@xaui/core'
 import { CircularActivityIndicator } from '@xaui/progress'
 import { colors } from '@xaui/colors'
-import type { ButtonProps } from './button-types'
+import type { IconButtonProps } from './icon-button-types'
 import { RippleEffect } from './ripple-effect'
 
 type Ripple = {
@@ -20,21 +19,16 @@ type Ripple = {
   size: number
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  children,
+export const IconButton: React.FC<IconButtonProps> = ({
+  icon,
   themeColor = 'default',
-  variant = 'solid',
+  variant = 'light',
   size = 'md',
   radius = 'md',
-  startContent,
-  endContent,
-  spinnerType = 'spinner',
-  spinnerPlacement = 'start',
   fullWidth = false,
   isDisabled = false,
   isLoading = false,
   enableRipple = false,
-  textStyle,
   style,
   onPress,
   onLongPress,
@@ -51,32 +45,28 @@ export const Button: React.FC<ButtonProps> = ({
   const sizeStyles = useMemo(() => {
     const sizes = {
       xs: {
-        paddingHorizontal: theme.spacing.sm,
-        paddingVertical: theme.spacing.xs,
-        minHeight: 28,
-        fontSize: theme.fontSizes.xs,
+        width: 28,
+        height: 28,
+        iconSize: 16,
       },
       sm: {
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.xs,
-        minHeight: 32,
-        fontSize: theme.fontSizes.sm,
+        width: 32,
+        height: 32,
+        iconSize: 18,
       },
       md: {
-        paddingHorizontal: theme.spacing.md,
-        paddingVertical: theme.spacing.sm,
-        minHeight: 40,
-        fontSize: theme.fontSizes.md,
+        width: 40,
+        height: 40,
+        iconSize: 20,
       },
       lg: {
-        paddingHorizontal: theme.spacing.lg,
-        paddingVertical: theme.spacing.md,
-        minHeight: 48,
-        fontSize: theme.fontSizes.lg,
+        width: 48,
+        height: 48,
+        iconSize: 24,
       },
     }
     return sizes[size]
-  }, [size, theme])
+  }, [size])
 
   const radiusStyles = useMemo(() => {
     const radii = {
@@ -108,11 +98,6 @@ export const Button: React.FC<ButtonProps> = ({
         backgroundColor: colors.transparent,
         borderWidth: 0,
       },
-      elevated: {
-        backgroundColor: colorScheme.main,
-        borderWidth: 0,
-        ...theme.shadows.md,
-      },
       faded: {
         backgroundColor: `${colorScheme.background}90`,
         borderWidth: theme.borderWidth.md,
@@ -122,29 +107,19 @@ export const Button: React.FC<ButtonProps> = ({
     return styles[variant]
   }, [variant, colorScheme, theme])
 
-  const textColor = useMemo(() => {
-    if (variant === 'solid' || variant === 'elevated') {
+  const iconColor = useMemo(() => {
+    if (variant === 'solid') {
       return colorScheme.foreground
     }
     return colorScheme.main
   }, [variant, colorScheme])
 
   const rippleColor = useMemo(() => {
-    if (variant === 'solid' || variant === 'elevated') {
+    if (variant === 'solid') {
       return '#ffffff'
     }
     return colorScheme.main
   }, [variant, colorScheme])
-
-  const spinnerSize = useMemo(() => {
-    const sizes = {
-      xs: 14,
-      sm: 16,
-      md: 18,
-      lg: 20,
-    }
-    return sizes[size]
-  }, [size])
 
   const handleLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout
@@ -176,17 +151,8 @@ export const Button: React.FC<ButtonProps> = ({
     setRipples((prev) => prev.filter((r) => r.id !== rippleId))
   }
 
-  const spinner = (
-    <CircularActivityIndicator
-      variant={spinnerType}
-      themeColor={variant === 'solid' || variant === 'elevated' ? undefined : themeColor}
-      color={variant === 'solid' || variant === 'elevated' ? textColor : undefined}
-      size={spinnerSize}
-    />
-  )
-
   return (
-    <View style={[fullWidth && styles.fullWidth]}>
+    <View style={[fullWidth && buttonStyles.fullWidth]}>
       <Pressable
         onPress={isDisabled || isLoading ? undefined : onPress}
         onLongPress={isDisabled || isLoading ? undefined : onLongPress}
@@ -195,18 +161,18 @@ export const Button: React.FC<ButtonProps> = ({
         onLayout={handleLayout}
         disabled={isDisabled || isLoading}
         style={({ pressed }) => [
-          styles.button,
+          buttonStyles.button,
           sizeStyles,
           radiusStyles,
           variantStyles,
-          fullWidth && styles.fullWidth,
-          isDisabled && styles.disabled,
-          pressed && !isDisabled && !isLoading && !enableRipple && styles.pressed,
+          fullWidth && buttonStyles.fullWidth,
+          isDisabled && buttonStyles.disabled,
+          pressed && !isDisabled && !isLoading && !enableRipple && buttonStyles.pressed,
           style,
         ]}
       >
         {enableRipple && (
-          <View style={[styles.rippleContainer, radiusStyles]}>
+          <View style={[buttonStyles.rippleContainer, radiusStyles]}>
             {ripples.map((ripple) => (
               <RippleEffect
                 key={ripple.id}
@@ -220,73 +186,36 @@ export const Button: React.FC<ButtonProps> = ({
           </View>
         )}
 
-        <View style={styles.contentContainer}>
-          {startContent && !isLoading && (
-            <View style={styles.startContent}>{startContent}</View>
-          )}
-
-          {isLoading && spinnerPlacement === 'start' && (
-            <View style={styles.spinner}>{spinner}</View>
-          )}
-
-          <Text
-            style={[
-              styles.text,
-              { fontSize: sizeStyles.fontSize, color: textColor },
-              isDisabled && styles.disabledText,
-              textStyle,
-            ]}
-          >
-            {children}
-          </Text>
-
-          {isLoading && spinnerPlacement === 'end' && (
-            <View style={styles.spinner}>{spinner}</View>
-          )}
-
-          {endContent && !isLoading && (
-            <View style={styles.endContent}>{endContent}</View>
-          )}
-        </View>
+        {isLoading ? (
+          <CircularActivityIndicator
+            variant="spinner"
+            themeColor={variant === 'solid' ? undefined : themeColor}
+            color={variant === 'solid' ? iconColor : undefined}
+            size={sizeStyles.iconSize}
+          />
+        ) : (
+          <View style={buttonStyles.iconContainer}>{icon}</View>
+        )}
       </Pressable>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+const buttonStyles = StyleSheet.create({
   button: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  contentContainer: {
-    flexDirection: 'row',
+  iconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-  },
-  text: {
-    fontWeight: '500',
-    textAlign: 'center',
-  },
-  startContent: {
-    marginRight: 4,
-  },
-  endContent: {
-    marginLeft: 4,
-  },
-  spinner: {
-    marginHorizontal: 4,
   },
   fullWidth: {
     width: '100%',
   },
   disabled: {
     opacity: 0.5,
-  },
-  disabledText: {
-    opacity: 0.7,
   },
   pressed: {
     opacity: 0.8,
