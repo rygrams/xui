@@ -167,7 +167,7 @@ describe('Checkbox Types', () => {
       fullWidth: true,
       isChecked: true,
       isDisabled: false,
-      onValueChange: (checked) => {},
+      onValueChange: (_checked) => {},
       style: { padding: 10 },
       labelStyle: { color: '#000' },
     }
