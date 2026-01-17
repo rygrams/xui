@@ -70,6 +70,7 @@ export default function ExploreScreen() {
         <Button
           themeColor="primary"
           isLoading
+          spinnerType="ticks"
           spinnerPlacement="start"
           onPress={() => {}}
         >
